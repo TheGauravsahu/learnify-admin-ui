@@ -2,6 +2,7 @@ import ErrorOccurred from "@/components/common/ErrorOccurred";
 import { ScreenLoader } from "@/components/common/Loader";
 import ClassWiseStudentGraph from "@/components/dashboard/ClassWiseStudentGraph";
 import CountCard from "@/components/dashboard/CountCard";
+import NoticeList from "@/components/dashboard/NoticeList";
 import StudentChart from "@/components/dashboard/StudentChart";
 import { type AdminDashboardQuery } from "@/gql/graphql";
 import { GET_DASHBOARD_STATS } from "@/graphql/queries/dashboard.query";
@@ -41,6 +42,10 @@ export default function DahboardPage() {
         <ClassWiseStudentGraph data={data?.classWiseStudentCount || []} />
       </div>
 
+      {/* NOTICES */}
+      <div className="">
+        <NoticeList notices={data?.adminDashboard.latestNotices || []} />
+      </div>
     </div>
   );
 }
