@@ -4,11 +4,11 @@ import UserDropdown from "./sidebar/UserDropdown";
 export default function Navbar() {
   return (
     <div className="w-full p-4 flex items-center  justify-between">
-      <div className="rounded-full border px-4 py-1 shadow-xs w-xs hidden md:flex items-center  gap-2">
+      <div className="rounded-full border border-gray-200 px-4 py-1 shadow-xs w-xs hidden md:flex items-center  gap-2">
         <Search className="size-4 text-muted-foreground" />
         <input
           placeholder="Search.."
-          className="border-none placeholder:text-muted-foreground placeholder:text-sm"
+          className="border-none outline-none placeholder:text-muted-foreground placeholder:text-sm"
         />
       </div>
 
