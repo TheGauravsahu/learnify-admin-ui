@@ -15,24 +15,6 @@ import {
 import { Ellipsis } from "lucide-react";
 import { RadialBar, RadialBarChart } from "recharts";
 
-const chartData = [
-  {
-    title: "total",
-    count: 106,
-    fill: "#fff",
-  },
-  {
-    title: "girls",
-    count: 53,
-    fill: "#48cae4",
-  },
-  {
-    title: "boys",
-    count: 56,
-    fill: "#FAE27C",
-  },
-];
-
 const chartConfig = {
   boys: {
     label: "Boys",
@@ -46,7 +28,32 @@ const chartConfig = {
 
 export const description = "A radial chart";
 
-export default function StudentChart() {
+interface StudentChartProps {
+  genderStats: {
+    boys: number;
+    girls: number;
+  };
+}
+
+export default function StudentChart({ genderStats }: StudentChartProps) {
+  const chartData = [
+    {
+      title: "total",
+      count: genderStats.boys + genderStats.girls,
+      fill: "#fff",
+    },
+    {
+      title: "girls",
+      count: genderStats.girls,
+      fill: "#48cae4",
+    },
+    {
+      title: "boys",
+      count: genderStats.boys,
+      fill: "#FAE27C",
+    },
+  ];
+
   return (
     <Card className="flex flex-col w-84 border-gray-200 shadow-none">
       <CardHeader className="items-center pb-0">
@@ -72,12 +79,12 @@ export default function StudentChart() {
       <CardFooter className="flex items-center gap-8 justify-center">
         <div className="flex flex-col items-start justify-start">
           <div className="bg-[#FAE27C] size-4 rounded-full" />
-          <h3 className="font-semibold">23</h3>
+          <h3 className="font-semibold">{genderStats.girls}</h3>
           <span className="text-muted-foreground text-sm">No of Boys</span>
         </div>
         <div className="flex flex-col items-start justify-start">
           <div className="bg-[#48cae4] size-4 rounded-full" />
-          <h3 className="font-semibold">36</h3>
+          <h3 className="font-semibold">{genderStats.girls}</h3>
           <span className="text-muted-foreground text-sm">No of Girls</span>
         </div>
       </CardFooter>

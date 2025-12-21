@@ -7,7 +7,7 @@ export default function AppRouter() {
   return (
     <Routes>
       <Route element={<DashbordLayout />}>
-        <Route path="*" element={<DashboardPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />

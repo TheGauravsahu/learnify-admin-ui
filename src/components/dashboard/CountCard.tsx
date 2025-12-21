@@ -24,7 +24,7 @@ export default function CountCard({
         <span className="w-15 h-6 mb-2 flex items-center justify-center p-1 text-[12px]  rounded-full bg-white text-green-400">
           {year}
         </span>
-        <CardTitle className="text-2xl font-bold">{count}8647</CardTitle>
+        <CardTitle className="text-2xl font-bold">{count}</CardTitle>
         <CardAction>
           <Ellipsis className="text-white" />
         </CardAction>
