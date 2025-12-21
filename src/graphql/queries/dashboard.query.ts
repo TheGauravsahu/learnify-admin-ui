@@ -1,25 +1,30 @@
 import { graphql } from "@/gql";
 
 export const GET_DASHBOARD_STATS = graphql(`
-  query GetDashboardStats {
+  query AdminDashboard {
     adminDashboard {
       counts {
         students
-        classes
-        notices
         teachers
         parents
+        classes
+        notices
       }
       genderStats {
         boys
         girls
       }
       latestNotices {
+        _id
         title
         description
         createdAt
-        _id
       }
+    }
+    classWiseStudentCount {
+      classId
+      className
+      count
     }
   }
 `);

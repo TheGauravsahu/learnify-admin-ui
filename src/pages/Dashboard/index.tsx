@@ -1,14 +1,15 @@
 import ErrorOccurred from "@/components/common/ErrorOccurred";
 import { ScreenLoader } from "@/components/common/Loader";
+import ClassWiseStudentGraph from "@/components/dashboard/ClassWiseStudentGraph";
 import CountCard from "@/components/dashboard/CountCard";
 import StudentChart from "@/components/dashboard/StudentChart";
-import { type GetDashboardStatsQuery } from "@/gql/graphql";
+import { type AdminDashboardQuery } from "@/gql/graphql";
 import { GET_DASHBOARD_STATS } from "@/graphql/queries/dashboard.query";
 import { useQuery } from "@apollo/client/react";
 
 export default function DahboardPage() {
   const { data, loading, error } =
-    useQuery<GetDashboardStatsQuery>(GET_DASHBOARD_STATS);
+    useQuery<AdminDashboardQuery>(GET_DASHBOARD_STATS);
 
   if (loading) return <ScreenLoader />;
   if (error) return <ErrorOccurred error={error} />;
@@ -35,9 +36,11 @@ export default function DahboardPage() {
       </div>
 
       {/* CHART */}
-      <div className="mt-8">
+      <div className="mt-8 flex items-center gap-8">
         <StudentChart genderStats={genderStats} />
+        <ClassWiseStudentGraph data={data?.classWiseStudentCount || []} />
       </div>
+
     </div>
   );
 }

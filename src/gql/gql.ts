@@ -14,10 +14,10 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-    "\n  query GetDashboardStats {\n    adminDashboard {\n      counts {\n        students\n        classes\n        notices\n        teachers\n        parents\n      }\n      genderStats {\n        boys\n        girls\n      }\n      latestNotices {\n        title\n        description\n        createdAt\n        _id\n      }\n    }\n  }\n": typeof types.GetDashboardStatsDocument,
+    "\n  query AdminDashboard {\n    adminDashboard {\n      counts {\n        students\n        teachers\n        parents\n        classes\n        notices\n      }\n      genderStats {\n        boys\n        girls\n      }\n      latestNotices {\n        _id\n        title\n        description\n        createdAt\n      }\n    }\n    classWiseStudentCount {\n      classId\n      className\n      count\n    }\n  }\n": typeof types.AdminDashboardDocument,
 };
 const documents: Documents = {
-    "\n  query GetDashboardStats {\n    adminDashboard {\n      counts {\n        students\n        classes\n        notices\n        teachers\n        parents\n      }\n      genderStats {\n        boys\n        girls\n      }\n      latestNotices {\n        title\n        description\n        createdAt\n        _id\n      }\n    }\n  }\n": types.GetDashboardStatsDocument,
+    "\n  query AdminDashboard {\n    adminDashboard {\n      counts {\n        students\n        teachers\n        parents\n        classes\n        notices\n      }\n      genderStats {\n        boys\n        girls\n      }\n      latestNotices {\n        _id\n        title\n        description\n        createdAt\n      }\n    }\n    classWiseStudentCount {\n      classId\n      className\n      count\n    }\n  }\n": types.AdminDashboardDocument,
 };
 
 /**
@@ -37,7 +37,7 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetDashboardStats {\n    adminDashboard {\n      counts {\n        students\n        classes\n        notices\n        teachers\n        parents\n      }\n      genderStats {\n        boys\n        girls\n      }\n      latestNotices {\n        title\n        description\n        createdAt\n        _id\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetDashboardStats {\n    adminDashboard {\n      counts {\n        students\n        classes\n        notices\n        teachers\n        parents\n      }\n      genderStats {\n        boys\n        girls\n      }\n      latestNotices {\n        title\n        description\n        createdAt\n        _id\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query AdminDashboard {\n    adminDashboard {\n      counts {\n        students\n        teachers\n        parents\n        classes\n        notices\n      }\n      genderStats {\n        boys\n        girls\n      }\n      latestNotices {\n        _id\n        title\n        description\n        createdAt\n      }\n    }\n    classWiseStudentCount {\n      classId\n      className\n      count\n    }\n  }\n"): (typeof documents)["\n  query AdminDashboard {\n    adminDashboard {\n      counts {\n        students\n        teachers\n        parents\n        classes\n        notices\n      }\n      genderStats {\n        boys\n        girls\n      }\n      latestNotices {\n        _id\n        title\n        description\n        createdAt\n      }\n    }\n    classWiseStudentCount {\n      classId\n      className\n      count\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

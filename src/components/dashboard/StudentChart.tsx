@@ -26,8 +26,6 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export const description = "A radial chart";
-
 interface StudentChartProps {
   genderStats: {
     boys: number;
@@ -55,9 +53,9 @@ export default function StudentChart({ genderStats }: StudentChartProps) {
   ];
 
   return (
-    <Card className="flex flex-col w-84 border-gray-200 shadow-none">
+    <Card className="flex flex-col w-sm border-gray-200 shadow-none">
       <CardHeader className="items-center pb-0">
-        <CardTitle className="text-xl font-bold">Students</CardTitle>
+        <CardTitle className="text-lg font-semibold">Students</CardTitle>
         <CardAction>
           <Ellipsis />
         </CardAction>
@@ -79,7 +77,7 @@ export default function StudentChart({ genderStats }: StudentChartProps) {
       <CardFooter className="flex items-center gap-8 justify-center">
         <div className="flex flex-col items-start justify-start">
           <div className="bg-[#FAE27C] size-4 rounded-full" />
-          <h3 className="font-semibold">{genderStats.girls}</h3>
+          <h3 className="font-semibold">{genderStats.boys}</h3>
           <span className="text-muted-foreground text-sm">No of Boys</span>
         </div>
         <div className="flex flex-col items-start justify-start">
