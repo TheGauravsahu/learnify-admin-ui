@@ -342,7 +342,7 @@ export type Teacher = {
 export type TeacherInput = {
   experience?: InputMaybe<Scalars['Int']['input']>;
   subject?: InputMaybe<Scalars['String']['input']>;
-  userId?: InputMaybe<Scalars['ID']['input']>;
+  user?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type User = {
@@ -360,5 +360,11 @@ export type AdminDashboardQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AdminDashboardQuery = { __typename?: 'Query', adminDashboard: { __typename?: 'DashboardOverview', counts: { __typename?: 'DashboardCounts', students: number, teachers: number, parents: number, classes: number, notices: number }, genderStats: { __typename?: 'GenderStats', boys: number, girls: number }, latestNotices: Array<{ __typename?: 'Notice', _id: string, title: string, description: string, createdAt: string }> }, classWiseStudentCount: Array<{ __typename?: 'ClassStudentCount', classId: string, className: string, count: number }> };
 
+export type ListTeachersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListTeachersQuery = { __typename?: 'Query', teachers: Array<{ __typename?: 'Teacher', _id: string, subject: string, experience: number, user: { __typename?: 'User', name: string, _id: string, email: string } }> };
+
 
 export const AdminDashboardDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AdminDashboard"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"adminDashboard"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"counts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"students"}},{"kind":"Field","name":{"kind":"Name","value":"teachers"}},{"kind":"Field","name":{"kind":"Name","value":"parents"}},{"kind":"Field","name":{"kind":"Name","value":"classes"}},{"kind":"Field","name":{"kind":"Name","value":"notices"}}]}},{"kind":"Field","name":{"kind":"Name","value":"genderStats"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"boys"}},{"kind":"Field","name":{"kind":"Name","value":"girls"}}]}},{"kind":"Field","name":{"kind":"Name","value":"latestNotices"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"classWiseStudentCount"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"classId"}},{"kind":"Field","name":{"kind":"Name","value":"className"}},{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}}]} as unknown as DocumentNode<AdminDashboardQuery, AdminDashboardQueryVariables>;
+export const ListTeachersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ListTeachers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"teachers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"subject"}},{"kind":"Field","name":{"kind":"Name","value":"experience"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<ListTeachersQuery, ListTeachersQueryVariables>;
