@@ -15,7 +15,6 @@ import {
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -24,9 +23,24 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
+import { useState } from "react";
 
 export default function TeacherListPage() {
-  const { data, loading, error } = useQuery<ListTeachersQuery>(LIST_TEACHERS);
+  const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState<"createdAt" | "experience">("createdAt");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const limit = 1;
+
+  const { data, loading, error } = useQuery<ListTeachersQuery>(LIST_TEACHERS, {
+    variables: {
+      page,
+      limit,
+      sortBy,
+      sortOrder,
+    },
+    fetchPolicy: "cache-and-network",
+  });
+  const totalPages = Math.ceil((data?.teachers.total ?? 0) / limit);
 
   if (loading) return <ScreenLoader />;
   if (error) return <ErrorOccurred error={error} />;
@@ -47,10 +61,10 @@ export default function TeacherListPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.teachers.map((teacher) => (
+            {data?.teachers.data.map((teacher) => (
               <TableRow
                 key={teacher._id}
-                className="odd:bg-secondary px-4 cursor-pointer"
+                className="even:bg-secondary px-4 border-none cursor-pointer"
               >
                 <TableCell>
                   <div className="flex items-center gap-2">
@@ -90,19 +104,24 @@ export default function TeacherListPage() {
           <Pagination>
             <PaginationContent>
               <PaginationItem>
-                <PaginationPrevious href="#" />
+                <PaginationPrevious
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                />
               </PaginationItem>
+              {[...Array(totalPages)].map((_, i) => (
+                <PaginationItem key={i}>
+                  <PaginationLink
+                    isActive={page === i + 1}
+                    onClick={() => setPage(i + 1)}
+                  >
+                    {i + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
               <PaginationItem>
-                <PaginationLink href="#1">1</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#2">2</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext href="#" />
+                <PaginationNext
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                />
               </PaginationItem>
             </PaginationContent>
           </Pagination>

@@ -266,7 +266,7 @@ export type Query = {
   student?: Maybe<Student>;
   students: Array<Student>;
   teacher?: Maybe<Teacher>;
-  teachers: Array<Teacher>;
+  teachers: TeacherListResponse;
 };
 
 
@@ -299,6 +299,14 @@ export type QueryTeacherArgs = {
   id: Scalars['ID']['input'];
 };
 
+
+export type QueryTeachersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  sortBy?: InputMaybe<TeacherSortField>;
+  sortOrder?: InputMaybe<SortOrder>;
+};
+
 export type RegisterInput = {
   email?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -311,6 +319,11 @@ export enum Role {
   Parent = 'PARENT',
   Student = 'STUDENT',
   Teacher = 'TEACHER'
+}
+
+export enum SortOrder {
+  Asc = 'asc',
+  Desc = 'desc'
 }
 
 export type Student = {
@@ -334,8 +347,10 @@ export type StudentInput = {
 export type Teacher = {
   __typename?: 'Teacher';
   _id: Scalars['ID']['output'];
+  createdAt: Scalars['String']['output'];
   experience: Scalars['Int']['output'];
   subject: Scalars['String']['output'];
+  updatedAt: Scalars['String']['output'];
   user: User;
 };
 
@@ -344,6 +359,21 @@ export type TeacherInput = {
   subject?: InputMaybe<Scalars['String']['input']>;
   user?: InputMaybe<Scalars['ID']['input']>;
 };
+
+export type TeacherListResponse = {
+  __typename?: 'TeacherListResponse';
+  data: Array<Teacher>;
+  limit: Scalars['Int']['output'];
+  page: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export enum TeacherSortField {
+  CreatedAt = 'createdAt',
+  Experience = 'experience',
+  Name = 'name',
+  Subject = 'subject'
+}
 
 export type User = {
   __typename?: 'User';
@@ -360,11 +390,16 @@ export type AdminDashboardQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AdminDashboardQuery = { __typename?: 'Query', adminDashboard: { __typename?: 'DashboardOverview', counts: { __typename?: 'DashboardCounts', students: number, teachers: number, parents: number, classes: number, notices: number }, genderStats: { __typename?: 'GenderStats', boys: number, girls: number }, latestNotices: Array<{ __typename?: 'Notice', _id: string, title: string, description: string, createdAt: string }> }, classWiseStudentCount: Array<{ __typename?: 'ClassStudentCount', classId: string, className: string, count: number }> };
 
-export type ListTeachersQueryVariables = Exact<{ [key: string]: never; }>;
+export type ListTeachersQueryVariables = Exact<{
+  page?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  sortBy?: InputMaybe<TeacherSortField>;
+  sortOrder?: InputMaybe<SortOrder>;
+}>;
 
 
-export type ListTeachersQuery = { __typename?: 'Query', teachers: Array<{ __typename?: 'Teacher', _id: string, subject: string, experience: number, user: { __typename?: 'User', name: string, _id: string, email: string } }> };
+export type ListTeachersQuery = { __typename?: 'Query', teachers: { __typename?: 'TeacherListResponse', total: number, page: number, limit: number, data: Array<{ __typename?: 'Teacher', _id: string, subject: string, experience: number, user: { __typename?: 'User', name: string, _id: string, email: string } }> } };
 
 
 export const AdminDashboardDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AdminDashboard"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"adminDashboard"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"counts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"students"}},{"kind":"Field","name":{"kind":"Name","value":"teachers"}},{"kind":"Field","name":{"kind":"Name","value":"parents"}},{"kind":"Field","name":{"kind":"Name","value":"classes"}},{"kind":"Field","name":{"kind":"Name","value":"notices"}}]}},{"kind":"Field","name":{"kind":"Name","value":"genderStats"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"boys"}},{"kind":"Field","name":{"kind":"Name","value":"girls"}}]}},{"kind":"Field","name":{"kind":"Name","value":"latestNotices"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"classWiseStudentCount"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"classId"}},{"kind":"Field","name":{"kind":"Name","value":"className"}},{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}}]} as unknown as DocumentNode<AdminDashboardQuery, AdminDashboardQueryVariables>;
-export const ListTeachersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ListTeachers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"teachers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"subject"}},{"kind":"Field","name":{"kind":"Name","value":"experience"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<ListTeachersQuery, ListTeachersQueryVariables>;
+export const ListTeachersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ListTeachers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"page"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sortBy"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"TeacherSortField"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sortOrder"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"SortOrder"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"teachers"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"page"},"value":{"kind":"Variable","name":{"kind":"Name","value":"page"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"sortBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sortBy"}}},{"kind":"Argument","name":{"kind":"Name","value":"sortOrder"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sortOrder"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"total"}},{"kind":"Field","name":{"kind":"Name","value":"page"}},{"kind":"Field","name":{"kind":"Name","value":"limit"}},{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"subject"}},{"kind":"Field","name":{"kind":"Name","value":"experience"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]}}]} as unknown as DocumentNode<ListTeachersQuery, ListTeachersQueryVariables>;
