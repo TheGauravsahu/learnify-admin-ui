@@ -31,3 +31,13 @@ export const LIST_TEACHERS = graphql(`
     }
   }
 `);
+
+export const CREATE_TEACHER = graphql(`
+  mutation CreateTeacher($input: TeacherInput!) {
+    createTeacher(input: $input) {
+      _id
+      subject
+      experience
+    }
+  }
+`);

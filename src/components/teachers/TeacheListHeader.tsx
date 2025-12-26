@@ -1,11 +1,10 @@
 import { Button } from "@/components/ui/button";
-import {
-  ArrowDownWideNarrow,
-  ArrowUpWideNarrow,
-  Plus,
-  Search,
-} from "lucide-react";
+import { ArrowDownWideNarrow, ArrowUpWideNarrow, Search } from "lucide-react";
 import SortByDropdown from "./SortByDropdown";
+import TeacherForm from "./TeacherForm";
+import { useMutation } from "@apollo/client/react";
+import { CREATE_TEACHER } from "@/graphql/queries/teacher.query";
+import { toast } from "sonner";
 
 interface TeacherListHeaderProps {
   sortOrder: "asc" | "desc";
@@ -20,6 +19,8 @@ export default function TeacheListHeader({
   searchInput,
   setSearchInput,
 }: TeacherListHeaderProps) {
+  const [createTeacher, { loading }] = useMutation(CREATE_TEACHER);
+
   return (
     <div className="flex items-center justify-between">
       <div className="w-xs">
@@ -42,9 +43,6 @@ export default function TeacheListHeader({
         </div>
 
         <div className="flex items-center gap-2">
-          {/* <Button className="bg-lightYellow hover:bg-yellow-400 text-black rounded-full">
-            <SlidersHorizontal />
-          </Button> */}
           <SortByDropdown updateParam={updateParam} />
           <Button
             onClick={() =>
@@ -58,9 +56,24 @@ export default function TeacheListHeader({
               <ArrowDownWideNarrow />
             )}
           </Button>
-          <Button className="bg-lightYellow hover:bg-yellow-400 text-black rounded-full">
-            <Plus />
-          </Button>
+          <TeacherForm
+            mode="create"
+            loading={loading}
+            onSubmit={async (values) => {
+              createTeacher({
+                variables: {
+                  input: values,
+                },
+                onError: (err) => {
+                  toast.error(err.message);
+                  throw err;
+                },
+                onCompleted: () => {
+                  toast.success("Teacher created successfully.");
+                },
+              });
+            }}
+          />
         </div>
       </div>
     </div>
