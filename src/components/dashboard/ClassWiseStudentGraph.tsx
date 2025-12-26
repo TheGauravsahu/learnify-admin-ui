@@ -35,7 +35,7 @@ export default function ClassWiseStudentGraph({
   }));
 
   return (
-    <Card className="h-100 w-xl border-gray-200 shadow-none">
+    <Card className="h-100 w-xs md:w-xl border-gray-200 shadow-none">
       <CardHeader>
         <CardTitle className="text-lg font-semibold">
           Class Wise Students

@@ -19,7 +19,7 @@ export default function CountCard({
   data: CountCardProps;
 }) {
   return (
-    <Card className="w-54 md:w-68 h-40 odd:bg-primary/60 even:bg-lightYellow  border-gray-400">
+    <Card className="w-70 lg:w-68  h-40 odd:bg-primary/60 even:bg-lightYellow  border-gray-400">
       <CardHeader>
         <span className="w-15 h-6 mb-2 flex items-center justify-center p-1 text-[12px]  rounded-full bg-white text-green-400">
           {year}

@@ -23,13 +23,26 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
+import { useDebounce } from "@/hooks/useDebounce";
 
 export default function TeacherListPage() {
-  const [page, setPage] = useState(1);
-  const [sortBy, setSortBy] = useState<"createdAt" | "experience">("createdAt");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
-  const limit = 1;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get("page")) || 1;
+  const search = searchParams.get("search") || "";
+  const sortBy = searchParams.get("sortBy") as "createdAt" | "experience";
+  const sortOrder = searchParams.get("sortOrder") as "asc" | "desc";
+  const limit = 10;
+  const [searchInput, setSearchInput] = useState(search);
+  const debouncedSearch = useDebounce(searchInput);
+
+  const updateParam = (key: string, value: string | number) => {
+    setSearchParams((prev) => {
+      prev.set(key, String(value));
+      return prev;
+    });
+  };
 
   const { data, loading, error } = useQuery<ListTeachersQuery>(LIST_TEACHERS, {
     variables: {
@@ -37,6 +50,7 @@ export default function TeacherListPage() {
       limit,
       sortBy,
       sortOrder,
+      search: debouncedSearch || undefined,
     },
     fetchPolicy: "cache-and-network",
   });
@@ -47,7 +61,12 @@ export default function TeacherListPage() {
 
   return (
     <div className="bg-background p-4 rounded-md flex-1 m-4 mt-0">
-      <TeacheListHeader />
+      <TeacheListHeader
+        updateParam={updateParam}
+        sortOrder={sortOrder}
+        searchInput={searchInput}
+        setSearchInput={setSearchInput}
+      />
 
       <div className="mt-4">
         <Table>
@@ -64,7 +83,7 @@ export default function TeacherListPage() {
             {data?.teachers.data.map((teacher) => (
               <TableRow
                 key={teacher._id}
-                className="even:bg-secondary px-4 border-none cursor-pointer"
+                className="even:bg-slate-50 px-4 border-none cursor-pointer"
               >
                 <TableCell>
                   <div className="flex items-center gap-2">
@@ -105,14 +124,16 @@ export default function TeacherListPage() {
             <PaginationContent>
               <PaginationItem>
                 <PaginationPrevious
-                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  className="cursor-pointer"
+                  onClick={() => updateParam("page", Math.max(1, page - 1))}
                 />
               </PaginationItem>
               {[...Array(totalPages)].map((_, i) => (
                 <PaginationItem key={i}>
                   <PaginationLink
+                    className="cursor-pointer"
                     isActive={page === i + 1}
-                    onClick={() => setPage(i + 1)}
+                    onClick={() => updateParam("page", i + 1)}
                   >
                     {i + 1}
                   </PaginationLink>
@@ -120,7 +141,10 @@ export default function TeacherListPage() {
               ))}
               <PaginationItem>
                 <PaginationNext
-                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  className="cursor-pointer"
+                  onClick={() =>
+                    updateParam("page", Math.min(totalPages, page + 1))
+                  }
                 />
               </PaginationItem>
             </PaginationContent>

@@ -53,7 +53,7 @@ export default function StudentChart({ genderStats }: StudentChartProps) {
   ];
 
   return (
-    <Card className="flex flex-col w-sm border-gray-200 shadow-none">
+    <Card className="flex flex-col w-xs md:w-sm h-100  border-gray-200 shadow-none">
       <CardHeader className="items-center pb-0">
         <CardTitle className="text-lg font-semibold">Students</CardTitle>
         <CardAction>

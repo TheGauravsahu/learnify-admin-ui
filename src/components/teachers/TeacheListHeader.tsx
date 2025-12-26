@@ -1,12 +1,25 @@
 import { Button } from "@/components/ui/button";
 import {
   ArrowDownWideNarrow,
+  ArrowUpWideNarrow,
   Plus,
   Search,
-  SlidersHorizontal,
 } from "lucide-react";
+import SortByDropdown from "./SortByDropdown";
 
-export default function TeacheListHeader() {
+interface TeacherListHeaderProps {
+  sortOrder: "asc" | "desc";
+  updateParam: (key: string, value: string | number) => void;
+  searchInput: string;
+  setSearchInput: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function TeacheListHeader({
+  sortOrder,
+  updateParam,
+  searchInput,
+  setSearchInput,
+}: TeacherListHeaderProps) {
   return (
     <div className="flex items-center justify-between">
       <div className="w-xs">
@@ -17,17 +30,33 @@ export default function TeacheListHeader() {
         <div className="rounded-full border border-gray-200 px-4 py-1 shadow-xs w-72  flex items-center  gap-2">
           <Search className="size-4 text-muted-foreground" />
           <input
-            placeholder="Search from table.."
+            value={searchInput}
+            onChange={(e) => {
+              setSearchInput(e.target.value);
+              updateParam("search", e.target.value);
+              updateParam("page", 1);
+            }}
+            placeholder="Search teacher..."
             className="border-none outline-none placeholder:text-muted-foreground placeholder:text-sm"
           />
         </div>
 
         <div className="flex items-center gap-2">
-          <Button className="bg-lightYellow hover:bg-yellow-400 text-black rounded-full">
+          {/* <Button className="bg-lightYellow hover:bg-yellow-400 text-black rounded-full">
             <SlidersHorizontal />
-          </Button>
-          <Button className="bg-lightYellow hover:bg-yellow-400 text-black rounded-full">
-            <ArrowDownWideNarrow />
+          </Button> */}
+          <SortByDropdown updateParam={updateParam} />
+          <Button
+            onClick={() =>
+              updateParam("sortOrder", sortOrder === "asc" ? "desc" : "asc")
+            }
+            className="bg-lightYellow hover:bg-yellow-400 text-black rounded-full"
+          >
+            {sortOrder === "asc" ? (
+              <ArrowUpWideNarrow />
+            ) : (
+              <ArrowDownWideNarrow />
+            )}
           </Button>
           <Button className="bg-lightYellow hover:bg-yellow-400 text-black rounded-full">
             <Plus />

@@ -6,12 +6,14 @@ export const LIST_TEACHERS = graphql(`
     $limit: Int
     $sortBy: TeacherSortField
     $sortOrder: SortOrder
+    $search: String
   ) {
     teachers(
       page: $page
       limit: $limit
       sortBy: $sortBy
       sortOrder: $sortOrder
+      search: $search
     ) {
       total
       page

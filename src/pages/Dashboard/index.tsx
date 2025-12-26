@@ -21,7 +21,7 @@ export default function DahboardPage() {
   return (
     <div className="min-h-screen w-full p-4">
       {/* COUNT CARDS */}
-      <div className="flex items-center gap-4 flex-wrap">
+      <div className="flex flex-col md:flex-row items-center gap-4 flex-wrap">
         <CountCard
           data={{ year: "2024/25", title: "Students", count: counts.students }}
         />
@@ -37,7 +37,7 @@ export default function DahboardPage() {
       </div>
 
       {/* CHART */}
-      <div className="mt-8 flex items-center gap-8">
+      <div className="mt-8 flex flex-col md:flex-row items-center gap-8">
         <StudentChart genderStats={genderStats} />
         <ClassWiseStudentGraph data={data?.classWiseStudentCount || []} />
       </div>
