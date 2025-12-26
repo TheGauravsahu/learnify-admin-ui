@@ -3,6 +3,7 @@ import DashbordLayout from "../layouts/DashbordLayout";
 import NotFoundPage from "../pages/NotFound";
 import DashboardPage from "../pages/Dashboard";
 import TeacherListPage from "@/pages/Teachers";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function AppRouter() {
   return (
@@ -15,6 +16,7 @@ export default function AppRouter() {
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      <Toaster position="top-center" />
     </>
   );
 }
