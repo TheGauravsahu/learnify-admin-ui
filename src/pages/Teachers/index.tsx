@@ -22,10 +22,11 @@ import {
 } from "@/components/ui/pagination";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
+import DeleteTeacherDialog from "@/components/teachers/DeleteTeacherDialog";
 
 export default function TeacherListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -110,9 +111,7 @@ export default function TeacherListPage() {
                   <Button className="bg-[#6eddcec9]/70 text-white">
                     <Pencil />
                   </Button>
-                  <Button className="bg-[#d28fdb] text-white">
-                    <Trash2 />
-                  </Button>
+                  <DeleteTeacherDialog teacherId={teacher._id} />
                 </TableCell>
               </TableRow>
             ))}

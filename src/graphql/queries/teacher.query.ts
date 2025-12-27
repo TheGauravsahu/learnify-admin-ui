@@ -41,3 +41,9 @@ export const CREATE_TEACHER = graphql(`
     }
   }
 `);
+
+export const DELETE_TEACHER = graphql(`
+  mutation DeleteTeacher($teacherId: ID!) {
+    deleteTeacher(id: $teacherId)
+  }
+`);
