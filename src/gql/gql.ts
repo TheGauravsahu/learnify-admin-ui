@@ -15,15 +15,17 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 type Documents = {
     "\n  query AdminDashboard {\n    adminDashboard {\n      counts {\n        students\n        teachers\n        parents\n        classes\n        notices\n      }\n      genderStats {\n        boys\n        girls\n      }\n      latestNotices {\n        _id\n        title\n        description\n        createdAt\n      }\n    }\n    classWiseStudentCount {\n      classId\n      className\n      count\n    }\n  }\n": typeof types.AdminDashboardDocument,
-    "\n  query ListTeachers(\n    $page: Int\n    $limit: Int\n    $sortBy: TeacherSortField\n    $sortOrder: SortOrder\n    $search: String\n  ) {\n    teachers(\n      page: $page\n      limit: $limit\n      sortBy: $sortBy\n      sortOrder: $sortOrder\n      search: $search\n    ) {\n      total\n      page\n      limit\n      data {\n        _id\n        subject\n        experience\n        user {\n          name\n          _id\n          email\n        }\n      }\n    }\n  }\n": typeof types.ListTeachersDocument,
+    "\n  query ListTeachers(\n    $page: Int\n    $limit: Int\n    $sortBy: TeacherSortField\n    $sortOrder: SortOrder\n    $search: String\n  ) {\n    teachers(\n      page: $page\n      limit: $limit\n      sortBy: $sortBy\n      sortOrder: $sortOrder\n      search: $search\n    ) {\n      total\n      page\n      limit\n      data {\n        _id\n        subject\n        experience\n        user {\n          name\n          _id\n          email\n          role\n        }\n      }\n    }\n  }\n": typeof types.ListTeachersDocument,
     "\n  mutation CreateTeacher($input: TeacherInput!) {\n    createTeacher(input: $input) {\n      _id\n      subject\n      experience\n    }\n  }\n": typeof types.CreateTeacherDocument,
     "\n  mutation DeleteTeacher($teacherId: ID!) {\n    deleteTeacher(id: $teacherId)\n  }\n": typeof types.DeleteTeacherDocument,
+    "\n  mutation UpdateTeacher($teacherId: ID!, $input: TeacherInput!) {\n    updateTeacher(id: $teacherId, input: $input) {\n      _id\n    }\n  }\n": typeof types.UpdateTeacherDocument,
 };
 const documents: Documents = {
     "\n  query AdminDashboard {\n    adminDashboard {\n      counts {\n        students\n        teachers\n        parents\n        classes\n        notices\n      }\n      genderStats {\n        boys\n        girls\n      }\n      latestNotices {\n        _id\n        title\n        description\n        createdAt\n      }\n    }\n    classWiseStudentCount {\n      classId\n      className\n      count\n    }\n  }\n": types.AdminDashboardDocument,
-    "\n  query ListTeachers(\n    $page: Int\n    $limit: Int\n    $sortBy: TeacherSortField\n    $sortOrder: SortOrder\n    $search: String\n  ) {\n    teachers(\n      page: $page\n      limit: $limit\n      sortBy: $sortBy\n      sortOrder: $sortOrder\n      search: $search\n    ) {\n      total\n      page\n      limit\n      data {\n        _id\n        subject\n        experience\n        user {\n          name\n          _id\n          email\n        }\n      }\n    }\n  }\n": types.ListTeachersDocument,
+    "\n  query ListTeachers(\n    $page: Int\n    $limit: Int\n    $sortBy: TeacherSortField\n    $sortOrder: SortOrder\n    $search: String\n  ) {\n    teachers(\n      page: $page\n      limit: $limit\n      sortBy: $sortBy\n      sortOrder: $sortOrder\n      search: $search\n    ) {\n      total\n      page\n      limit\n      data {\n        _id\n        subject\n        experience\n        user {\n          name\n          _id\n          email\n          role\n        }\n      }\n    }\n  }\n": types.ListTeachersDocument,
     "\n  mutation CreateTeacher($input: TeacherInput!) {\n    createTeacher(input: $input) {\n      _id\n      subject\n      experience\n    }\n  }\n": types.CreateTeacherDocument,
     "\n  mutation DeleteTeacher($teacherId: ID!) {\n    deleteTeacher(id: $teacherId)\n  }\n": types.DeleteTeacherDocument,
+    "\n  mutation UpdateTeacher($teacherId: ID!, $input: TeacherInput!) {\n    updateTeacher(id: $teacherId, input: $input) {\n      _id\n    }\n  }\n": types.UpdateTeacherDocument,
 };
 
 /**
@@ -47,7 +49,7 @@ export function graphql(source: "\n  query AdminDashboard {\n    adminDashboard 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query ListTeachers(\n    $page: Int\n    $limit: Int\n    $sortBy: TeacherSortField\n    $sortOrder: SortOrder\n    $search: String\n  ) {\n    teachers(\n      page: $page\n      limit: $limit\n      sortBy: $sortBy\n      sortOrder: $sortOrder\n      search: $search\n    ) {\n      total\n      page\n      limit\n      data {\n        _id\n        subject\n        experience\n        user {\n          name\n          _id\n          email\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query ListTeachers(\n    $page: Int\n    $limit: Int\n    $sortBy: TeacherSortField\n    $sortOrder: SortOrder\n    $search: String\n  ) {\n    teachers(\n      page: $page\n      limit: $limit\n      sortBy: $sortBy\n      sortOrder: $sortOrder\n      search: $search\n    ) {\n      total\n      page\n      limit\n      data {\n        _id\n        subject\n        experience\n        user {\n          name\n          _id\n          email\n        }\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query ListTeachers(\n    $page: Int\n    $limit: Int\n    $sortBy: TeacherSortField\n    $sortOrder: SortOrder\n    $search: String\n  ) {\n    teachers(\n      page: $page\n      limit: $limit\n      sortBy: $sortBy\n      sortOrder: $sortOrder\n      search: $search\n    ) {\n      total\n      page\n      limit\n      data {\n        _id\n        subject\n        experience\n        user {\n          name\n          _id\n          email\n          role\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query ListTeachers(\n    $page: Int\n    $limit: Int\n    $sortBy: TeacherSortField\n    $sortOrder: SortOrder\n    $search: String\n  ) {\n    teachers(\n      page: $page\n      limit: $limit\n      sortBy: $sortBy\n      sortOrder: $sortOrder\n      search: $search\n    ) {\n      total\n      page\n      limit\n      data {\n        _id\n        subject\n        experience\n        user {\n          name\n          _id\n          email\n          role\n        }\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -56,6 +58,10 @@ export function graphql(source: "\n  mutation CreateTeacher($input: TeacherInput
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation DeleteTeacher($teacherId: ID!) {\n    deleteTeacher(id: $teacherId)\n  }\n"): (typeof documents)["\n  mutation DeleteTeacher($teacherId: ID!) {\n    deleteTeacher(id: $teacherId)\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UpdateTeacher($teacherId: ID!, $input: TeacherInput!) {\n    updateTeacher(id: $teacherId, input: $input) {\n      _id\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateTeacher($teacherId: ID!, $input: TeacherInput!) {\n    updateTeacher(id: $teacherId, input: $input) {\n      _id\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

@@ -55,8 +55,14 @@ export default function DeleteTeacherDialog({
                   variables: {
                     teacherId,
                   },
+                  onCompleted: () => {
+                    toast.success("Teacher deleted successfully.");
+                  },
+                  onError: (err) => {
+                    toast.error(err.message);
+                    throw err;
+                  },
                 });
-                toast.success("Teacher deleted successfully.");
               }}
               type="submit"
               variant="destructive"

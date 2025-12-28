@@ -26,6 +26,7 @@ export const LIST_TEACHERS = graphql(`
           name
           _id
           email
+          role
         }
       }
     }
@@ -45,5 +46,13 @@ export const CREATE_TEACHER = graphql(`
 export const DELETE_TEACHER = graphql(`
   mutation DeleteTeacher($teacherId: ID!) {
     deleteTeacher(id: $teacherId)
+  }
+`);
+
+export const UPDATE_TEACHER = graphql(`
+  mutation UpdateTeacher($teacherId: ID!, $input: TeacherInput!) {
+    updateTeacher(id: $teacherId, input: $input) {
+      _id
+    }
   }
 `);

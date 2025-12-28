@@ -2,8 +2,8 @@ import ErrorOccurred from "@/components/common/ErrorOccurred";
 import { ScreenLoader } from "@/components/common/Loader";
 import TeacheListHeader from "@/components/teachers/TeacheListHeader";
 import type { ListTeachersQuery } from "@/gql/graphql";
-import { LIST_TEACHERS } from "@/graphql/queries/teacher.query";
-import { useQuery } from "@apollo/client/react";
+import { LIST_TEACHERS, UPDATE_TEACHER } from "@/graphql/queries/teacher.query";
+import { useMutation, useQuery } from "@apollo/client/react";
 import {
   Table,
   TableBody,
@@ -21,12 +21,12 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
 import DeleteTeacherDialog from "@/components/teachers/DeleteTeacherDialog";
+import TeacherForm from "@/components/teachers/TeacherForm";
+import { toast } from "sonner";
 
 export default function TeacherListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -56,6 +56,10 @@ export default function TeacherListPage() {
     fetchPolicy: "cache-and-network",
   });
   const totalPages = Math.ceil((data?.teachers.total ?? 0) / limit);
+
+  // ----------- UPDATE MUTATION ------
+  const [updateTeacher, { loading: isUpdateTeacherLoadig }] =
+    useMutation(UPDATE_TEACHER);
 
   if (loading) return <ScreenLoader />;
   if (error) return <ErrorOccurred error={error} />;
@@ -108,9 +112,28 @@ export default function TeacherListPage() {
                 <TableCell>{teacher.subject}</TableCell>
                 <TableCell>{teacher.experience}</TableCell>
                 <TableCell className="text-right gap-2 flex items-center justify-end">
-                  <Button className="bg-[#6eddcec9]/70 text-white">
-                    <Pencil />
-                  </Button>
+                  <TeacherForm
+                    mode="update"
+                    loading={isUpdateTeacherLoadig}
+                    initialData={teacher}
+                    onSubmit={async (values) => {
+                      updateTeacher({
+                        variables: {
+                          teacherId: teacher._id,
+                          input: values,
+                        },
+                        onCompleted: () => {
+                          toast.success("Teacher updated successfully.");
+                        },
+                        onError: (err) => {
+                          toast.error(err.message);
+                          console.log(err);
+                          throw err;
+                        },
+                      });
+                    }}
+                  />
+
                   <DeleteTeacherDialog teacherId={teacher._id} />
                 </TableCell>
               </TableRow>

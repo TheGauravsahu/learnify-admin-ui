@@ -1,4 +1,3 @@
-import { type Teacher } from "@/gql/graphql";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -23,26 +22,52 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Plus } from "lucide-react";
-import { useEffect } from "react";
+import { Pencil, Plus } from "lucide-react";
+import { useEffect, useState } from "react";
 import { generatePassword } from "@/utils/passwordGen";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Role } from "@/gql/graphql";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const USER_ROLES = ["ADMIN", "TEACHER", "STUDENT", "PARENT"];
+const RoleEnum = z.enum(USER_ROLES);
 
 const schema = z.object({
   register: z.object({
     name: z.string().min(2),
     email: z.string().email().optional(),
-    password: z.string().min(6).optional(),
-    sendWelcomeEmail: z.boolean(),
+    password: z.string().optional(),
+    role: RoleEnum.optional(),
+    sendWelcomeEmail: z.boolean().optional(),
   }),
   subject: z.string().min(2).max(50),
   experience: z.number().min(0),
 });
 
+interface IInitialData {
+  _id: string;
+  subject: string;
+  experience: number;
+  user: {
+    name: string;
+    _id: string;
+    email: string;
+    role: Role;
+  };
+}
+
 interface TeacherFormProps {
   mode: "create" | "update";
-  initialData?: Teacher;
+  initialData?: IInitialData;
   onSubmit: (value: TeacherFormValues) => void;
   loading: boolean;
 }
@@ -55,14 +80,16 @@ export default function TeacherForm({
   onSubmit,
   loading,
 }: TeacherFormProps) {
+  const [open, setOpen] = useState(false);
   const form = useForm<TeacherFormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
       register: {
         name: "",
         email: "",
-        password: generatePassword(),
+        password: generatePassword(20),
         sendWelcomeEmail: true,
+        role: "TEACHER",
       },
 
       subject: "",
@@ -74,10 +101,10 @@ export default function TeacherForm({
     if (mode === "update" && initialData) {
       form.reset({
         register: {
-          name: initialData.user.name,
-          email: initialData.user.email,
+          name: initialData?.user.name,
+          email: initialData?.user.email,
           password: "",
-          sendWelcomeEmail: false,
+          role: initialData?.user.role,
         },
         subject: initialData.subject,
         experience: initialData.experience,
@@ -90,28 +117,29 @@ export default function TeacherForm({
   };
 
   const handleSubmit = async (values: TeacherFormValues) => {
-    await onSubmit(values);
-
-    if (mode === "create") {
-      form.reset({
-        register: {
-          name: "",
-          email: "",
-          password: generatePassword(),
-          sendWelcomeEmail: true,
-        },
-        subject: "",
-        experience: 0,
-      });
+    try {
+      await onSubmit(values);
+      if (mode === "create") {
+        form.reset();
+      }
+      setOpen(false);
+    } catch (err) {
+      console.log(err);
     }
   };
 
   return (
-    <Sheet>
+    <Sheet onOpenChange={setOpen} open={open}>
       <SheetTrigger asChild>
-        <Button className="bg-lightYellow hover:bg-yellow-400 text-black rounded-full">
-          <Plus />
-        </Button>
+        {mode === "create" ? (
+          <Button className="bg-lightYellow hover:bg-yellow-400 text-black rounded-full">
+            <Plus />
+          </Button>
+        ) : (
+          <Button className="bg-[#6eddcec9]/70 text-white">
+            <Pencil />
+          </Button>
+        )}
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
@@ -195,24 +223,64 @@ export default function TeacherForm({
                 </div>
 
                 <div className="mt-6">
-                  <FormLabel className="mb-2">Others</FormLabel>
-                  <FormField
-                    control={form.control}
-                    name="register.sendWelcomeEmail"
-                    render={({ field }) => (
-                      <FormItem className="flex items-start justify-between mt-1  border border-gray-300 cursor-pointer p-4 py-3 rounded-lg shadow-md">
-                        <FormLabel className="mb-2 dark:text-muted-foreground">
-                          Send Welcome Email
-                        </FormLabel>
-                        <FormControl>
-                          <Switch
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
+                  {mode === "create" ? (
+                    <div className="">
+                      <FormLabel className="mb-2">Others</FormLabel>
+                      <FormField
+                        control={form.control}
+                        name="register.sendWelcomeEmail"
+                        render={({ field }) => (
+                          <FormItem className="flex items-start justify-between mt-1  border border-gray-300 cursor-pointer p-4 py-3 rounded-lg shadow-md">
+                            <FormLabel className="mb-2 dark:text-muted-foreground">
+                              Send Welcome Email
+                            </FormLabel>
+                            <FormControl>
+                              <Switch
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  ) : (
+                    <div className="">
+                      <FormLabel className="mb-2">Role</FormLabel>
+                      <FormField
+                        control={form.control}
+                        name="register.role"
+                        render={({ field }) => (
+                          <FormItem className="dark:text-muted-foreground">
+                            <FormControl>
+                              <Select
+                                value={field.value}
+                                onValueChange={field.onChange}
+                              >
+                                <SelectTrigger className="w-full">
+                                  <SelectValue placeholder="Select a Role" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectGroup>
+                                    <SelectLabel>Roles</SelectLabel>
+                                    {USER_ROLES.map((r, i) => (
+                                      <SelectItem
+                                        key={i}
+                                        value={r}
+                                        className="text-muted-foreground"
+                                      >
+                                        {r}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectGroup>
+                                </SelectContent>
+                              </Select>
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  )}
                 </div>
               </TabsContent>
 
@@ -267,10 +335,10 @@ export default function TeacherForm({
             onClick={form.handleSubmit(handleSubmit)}
             type="submit"
           >
-            Save changes
+            {mode === "create" ? "Create Teacher" : "Save Changes"}
           </Button>
 
-          <SheetClose asChild>
+          <SheetClose asChild onClick={() => setOpen(false)}>
             <Button className="dark:text-muted-foreground" variant="outline">
               Close
             </Button>
