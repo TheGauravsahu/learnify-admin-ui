@@ -19,7 +19,10 @@ export default function TeacheListHeader({
   searchInput,
   setSearchInput,
 }: TeacherListHeaderProps) {
-  const [createTeacher, { loading }] = useMutation(CREATE_TEACHER);
+  const [createTeacher, { loading }] = useMutation(CREATE_TEACHER, {
+    refetchQueries: ["ListTeachers"],
+    awaitRefetchQueries: true,
+  });
 
   return (
     <div className="flex items-center justify-between">
@@ -28,7 +31,7 @@ export default function TeacheListHeader({
       </div>
 
       <div className="flex flex-col lg:flex-row w-full items-end lg:items-center justify-end  gap-2">
-        <div className="rounded-full border border-gray-200 px-4 py-1 shadow-xs w-72  flex items-center  gap-2">
+        <div className="rounded-full border border-gray-200 dark:border-primary-foreground px-4 py-1 shadow-xs w-72  flex items-center  gap-2">
           <Search className="size-4 text-muted-foreground" />
           <input
             value={searchInput}

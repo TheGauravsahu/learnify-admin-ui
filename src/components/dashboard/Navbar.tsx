@@ -1,5 +1,6 @@
 import { Search } from "lucide-react";
 import UserDropdown from "./sidebar/UserDropdown";
+import { ModeToggle } from "../common/ModeToggle";
 
 export default function Navbar() {
   return (
@@ -14,6 +15,7 @@ export default function Navbar() {
 
       <div className="w-full flex items-center justify-end">
         <UserDropdown />
+        <ModeToggle />
       </div>
     </div>
   );

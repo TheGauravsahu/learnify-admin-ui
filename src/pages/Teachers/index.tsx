@@ -84,7 +84,7 @@ export default function TeacherListPage() {
             {data?.teachers.data.map((teacher) => (
               <TableRow
                 key={teacher._id}
-                className="even:bg-slate-50 px-4 border-none cursor-pointer"
+                className="even:bg-slate-50 dark:even:bg-secondary px-4 border-none cursor-pointer"
               >
                 <TableCell>
                   <div className="flex items-center gap-2">

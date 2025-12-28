@@ -176,6 +176,7 @@ export default function TeacherForm({
                             placeholder="Enter password"
                             type="text"
                             {...field}
+                            className="dark:text-muted-foreground"
                           />
                         </FormControl>
                         <FormMessage />
@@ -187,6 +188,7 @@ export default function TeacherForm({
                     type="button"
                     variant="outline"
                     onClick={generateAndSetPassword}
+                    className="dark:text-foreground"
                   >
                     Generate
                   </Button>
@@ -199,7 +201,7 @@ export default function TeacherForm({
                     name="register.sendWelcomeEmail"
                     render={({ field }) => (
                       <FormItem className="flex items-start justify-between mt-1  border border-gray-300 cursor-pointer p-4 py-3 rounded-lg shadow-md">
-                        <FormLabel className="mb-2">
+                        <FormLabel className="mb-2 dark:text-muted-foreground">
                           Send Welcome Email
                         </FormLabel>
                         <FormControl>
@@ -243,6 +245,7 @@ export default function TeacherForm({
                         <Input
                           type="number"
                           placeholder="Enter experience"
+                          className="dark:text-foreground"
                           {...field}
                           onChange={(e) =>
                             field.onChange(e.target.valueAsNumber)
@@ -268,7 +271,9 @@ export default function TeacherForm({
           </Button>
 
           <SheetClose asChild>
-            <Button variant="outline">Close</Button>
+            <Button className="dark:text-muted-foreground" variant="outline">
+              Close
+            </Button>
           </SheetClose>
         </SheetFooter>
       </SheetContent>

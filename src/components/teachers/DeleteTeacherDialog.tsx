@@ -12,7 +12,6 @@ import { Button } from "../ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useMutation } from "@apollo/client/react";
 import { DELETE_TEACHER } from "@/graphql/queries/teacher.query";
-import { type DeleteTeacherMutation } from "@/gql/graphql";
 import { toast } from "sonner";
 
 interface DeleteTeacherDialogProps {
@@ -22,8 +21,10 @@ interface DeleteTeacherDialogProps {
 export default function DeleteTeacherDialog({
   teacherId,
 }: DeleteTeacherDialogProps) {
-  const [deleteTeacher, { loading }] =
-    useMutation<DeleteTeacherMutation>(DELETE_TEACHER);
+  const [deleteTeacher, { loading }] = useMutation(DELETE_TEACHER, {
+    refetchQueries: ["ListTeachers"],
+    awaitRefetchQueries: true,
+  });
 
   return (
     <Dialog>
@@ -34,7 +35,9 @@ export default function DeleteTeacherDialog({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Are you absolutely sure?</DialogTitle>
+          <DialogTitle className="dark:text-foreground">
+            Are you absolutely sure?
+          </DialogTitle>
           <DialogDescription>
             This action cannot be undone. This will permanently delete your
             account and remove your data from our servers.
@@ -45,21 +48,23 @@ export default function DeleteTeacherDialog({
             <Button variant="secondary">Cancel</Button>
           </DialogClose>
 
-          <Button
-            onClick={() => {
-              deleteTeacher({
-                variables: {
-                  teacherId,
-                },
-              });
-              toast.success("Teacher deleted successfully.");
-            }}
-            type="submit"
-            variant="destructive"
-            disabled={loading}
-          >
-            Confirm
-          </Button>
+          <DialogClose>
+            <Button
+              onClick={() => {
+                deleteTeacher({
+                  variables: {
+                    teacherId,
+                  },
+                });
+                toast.success("Teacher deleted successfully.");
+              }}
+              type="submit"
+              variant="destructive"
+              disabled={loading}
+            >
+              Confirm
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

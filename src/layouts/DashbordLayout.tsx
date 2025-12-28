@@ -10,7 +10,7 @@ export default function DashbordLayout() {
         <Sidebar />
       </div>
 
-      <div className="lg:w-[84%] w-[80%] h-full flex-1 overflow-y-scroll bg-[#F7F8FA]">
+      <div className="lg:w-[84%] w-[80%] h-full flex-1 overflow-y-scroll bg-[#F7F8FA] dark:bg-secondary dark:text-foreground">
         <Navbar />
         <Outlet />
       </div>
