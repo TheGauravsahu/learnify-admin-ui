@@ -9,5 +9,15 @@ const httpLink = new HttpLink({
 
 export const apolloClient = new ApolloClient({
   link: httpLink,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          ListTeachers: {
+            keyArgs: ["page", "limit", "sortBy", "sortOrder", "search"],
+          },
+        },
+      },
+    },
+  }),
 });

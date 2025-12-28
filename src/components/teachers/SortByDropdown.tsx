@@ -24,11 +24,30 @@ export default function SortByDropdown({ updateParam }: SortByDropdownProps) {
       <DropdownMenuContent>
         <DropdownMenuLabel>Sort By</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="cursor-pointer" onClick={() => updateParam("sortBy", "createdAt")}>
-          Created At
-        </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer"  onClick={() => updateParam("sortBy", "experience")}>
+
+        <DropdownMenuItem
+          className="cursor-pointer"
+          onClick={() => updateParam("sortBy", "experience")}
+        >
           Experience
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className="cursor-pointer"
+          onClick={() => updateParam("sortBy", "subject")}
+        >
+          Subject
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className="cursor-pointer"
+          onClick={() => updateParam("sortBy", "name")}
+        >
+          Name
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className="cursor-pointer"
+          onClick={() => updateParam("sortBy", "createdAt")}
+        >
+          Created At
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
