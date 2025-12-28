@@ -58,8 +58,10 @@ export default function TeacherListPage() {
   const totalPages = Math.ceil((data?.teachers.total ?? 0) / limit);
 
   // ----------- UPDATE MUTATION ------
-  const [updateTeacher, { loading: isUpdateTeacherLoadig }] =
-    useMutation(UPDATE_TEACHER);
+  const [updateTeacher, { loading: isUpdateTeacherLoadig }] = useMutation(UPDATE_TEACHER,{
+      refetchQueries: ["ListTeachers"],
+      awaitRefetchQueries: true,
+    });
 
   if (loading) return <ScreenLoader />;
   if (error) return <ErrorOccurred error={error} />;

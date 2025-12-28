@@ -103,7 +103,7 @@ export default function TeacherForm({
         register: {
           name: initialData?.user.name,
           email: initialData?.user.email,
-          password: "",
+          password: generatePassword(20),
           role: initialData?.user.role,
         },
         subject: initialData.subject,
