@@ -2,14 +2,18 @@ import { buttonVariants } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export default function NotFoundPage() {
+export default function UnauthorizedPage() {
   return (
     <div className="flex bg-background text-foreground flex-col items-center justify-center h-screen w-full px-4 text-center">
-      <img src="./not-found.svg" alt="Error" className="w-64 mb-6 opacity-90" />
-      <h2 className="text-2xl font-semibold mb-2">404 Not Found</h2>
-      <p className="text-muted-foreground max-w-md mb-4">
-        The page you are looking for does not exists.
-      </p>
+      <img
+        src="/unauthorized.svg"
+        alt="Error"
+        className="w-64 mb-6 opacity-90"
+      />
+      <h2 className="text-2xl font-semibold mb-2">Unauthorized</h2>
+      <code className="bg-destructive/10 text-destructive px-4 py-2 rounded text-sm mb-4">
+        You are not authorized to access this page
+      </code>
 
       <Link className={buttonVariants({ variant: "secondary" })} to="/">
         <ArrowLeft /> Go Back

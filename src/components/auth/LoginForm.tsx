@@ -65,6 +65,13 @@ export default function LoginForm() {
       variables: { input: { email: username, password } },
       onCompleted: (res) => {
         const { login: data } = res as { login: LoginResponse };
+        
+        // 🚫 ROLE CHECK
+        if (data.user.role !== "ADMIN") {
+          toast.error("Access denied. Admins only.");
+          return;
+        }
+
         authStore.login({
           user: data.user,
           token: data.token,

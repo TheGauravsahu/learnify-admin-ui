@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 import ClassesListPage from "@/pages/Classes";
 import HomePage from "@/pages/Home";
 import ProtectedRoutes from "./protected-routes";
+import UnauthorizedPage from "@/pages/Unauthorized";
 
 export default function AppRouter() {
   return (
@@ -22,6 +23,7 @@ export default function AppRouter() {
           </Route>
         </Route>
 
+        <Route path="/unauthorized" element={<UnauthorizedPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Toaster position="top-center" />
