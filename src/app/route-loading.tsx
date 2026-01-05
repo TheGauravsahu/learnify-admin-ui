@@ -8,12 +8,10 @@ export default function RouteLoading() {
 
   useEffect(() => {
     start();
-
     // Simulate page load completion
     const timeout = setTimeout(() => {
       complete();
-    }, 300); 
-
+    }, 300);
     return () => clearTimeout(timeout);
   }, [location.pathname, complete, start]);
 
