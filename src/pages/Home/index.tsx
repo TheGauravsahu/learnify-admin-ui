@@ -2,7 +2,7 @@ import LoginForm from "@/components/auth/LoginForm";
 
 export default function HomePage() {
   return (
-    <div className="bg-background flex flex-col md:flex-row items-center md:justify-between h-screen w-full text-white">
+    <div className="bg-background flex flex-col md:flex-row items-center md:justify-between h-screen w-full text-foreground">
       <div className="w-full flex md:items-center justify-center md:pt-4 h-full overflow-hidden disable-caret z-0">
         <img
           src="/login-illus.svg"

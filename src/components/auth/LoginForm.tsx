@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-// import { useEffect } from "react";
+import { useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { useMutation } from "@apollo/client/react";
 import { LOGIN } from "@/graphql/queries/auth.query";
@@ -26,7 +26,7 @@ import Loader from "../common/Loader";
 import { toast } from "sonner";
 import { Switch } from "../ui/switch";
 import { useAuthStore, type LoginResponse } from "@/stores/auth.store";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const schema = z.object({
   username: z.string().min(3, "Username must be atlease 3 characters long."),
@@ -37,6 +37,8 @@ const schema = z.object({
 type LoginFormValues = z.infer<typeof schema>;
 
 export default function LoginForm() {
+  const { isAuthenticated } = useAuthStore();
+
   const navigate = useNavigate();
   const authStore = useAuthStore();
   const [login, { loading }] = useMutation(LOGIN);
@@ -49,27 +51,29 @@ export default function LoginForm() {
     },
   });
 
-  //   useEffect(() => {
-  //     const { rememberMe, username, password } = localStorage.getItem("auth");
-  //     if (rememberMe && !username && !password) {
-  //       form.reset({
-  //         username,
-  //         password,
-  //         rememberMe,
-  //       });
-  //     }
-  //   }, [form]);
-
   function onSubmit({ username, password, rememberMe }: LoginFormValues) {
     login({
       variables: { input: { email: username, password } },
       onCompleted: (res) => {
         const { login: data } = res as { login: LoginResponse };
-        
+
         // 🚫 ROLE CHECK
         if (data.user.role !== "ADMIN") {
           toast.error("Access denied. Admins only.");
           return;
+        }
+
+        // cache login credentials
+        if (rememberMe) {
+          localStorage.setItem(
+            "loginCred-cache",
+            JSON.stringify({
+              rememberMe: true,
+              username,
+            })
+          );
+        } else {
+          localStorage.removeItem("loginCred-cache");
         }
 
         authStore.login({
@@ -77,6 +81,7 @@ export default function LoginForm() {
           token: data.token,
           rememberMe,
         });
+
         toast.success("Login successfully.");
         navigate("/dashboard");
       },
@@ -87,6 +92,23 @@ export default function LoginForm() {
       },
     });
   }
+
+  useEffect(() => {
+    const raw = localStorage.getItem("loginCred-cache");
+    if (!raw) return;
+
+    const parsed = JSON.parse(raw) as {
+      rememberMe?: boolean;
+      username?: string;
+    };
+
+    if (parsed.rememberMe && parsed.username) {
+      form.setValue("username", parsed.username);
+      form.setValue("rememberMe", true);
+    }
+  }, [form]);
+
+  if (isAuthenticated) return <Navigate to="/dashboard" replace />;
 
   return (
     <Card className="dark:border-0 h-100 w-100">
