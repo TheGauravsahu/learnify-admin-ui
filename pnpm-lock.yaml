@@ -71,6 +71,9 @@ importers:
       react-router-dom:
         specifier: ^7.11.0
         version: 7.11.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      react-top-loading-bar:
+        specifier: ^3.0.2
+        version: 3.0.2(react@19.2.3)
       recharts:
         specifier: ^2.15.4
         version: 2.15.4(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -2856,6 +2859,12 @@ packages:
     peerDependenciesMeta:
       '@types/react':
         optional: true
+
+  react-top-loading-bar@3.0.2:
+    resolution: {integrity: sha512-hW0CHrHqKdBOBsVhms73ka0rgb9/aoiRfqo7jiS1vwIYDK7VkyMj52ypo5ewhshTQGHKE6mRvR99GZBZ+FuM/Q==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: ^16 || ^17 || ^18 || ^19
 
   react-transition-group@4.4.5:
     resolution: {integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==}
@@ -6101,6 +6110,10 @@ snapshots:
       tslib: 2.8.1
     optionalDependencies:
       '@types/react': 19.2.7
+
+  react-top-loading-bar@3.0.2(react@19.2.3):
+    dependencies:
+      react: 19.2.3
 
   react-transition-group@4.4.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:

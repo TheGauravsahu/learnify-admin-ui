@@ -8,6 +8,7 @@ import ClassesListPage from "@/pages/Classes";
 import HomePage from "@/pages/Home";
 import ProtectedRoutes from "./protected-routes";
 import UnauthorizedPage from "@/pages/Unauthorized";
+import RouteLoading from "./route-loading";
 
 export default function AppRouter() {
   return (
@@ -26,6 +27,7 @@ export default function AppRouter() {
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      <RouteLoading />
       <Toaster position="top-center" />
     </>
   );
