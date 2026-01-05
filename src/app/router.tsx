@@ -4,14 +4,22 @@ import NotFoundPage from "../pages/NotFound";
 import DashboardPage from "../pages/Dashboard";
 import TeacherListPage from "@/pages/Teachers";
 import { Toaster } from "@/components/ui/sonner";
+import ClassesListPage from "@/pages/Classes";
+import HomePage from "@/pages/Home";
+import ProtectedRoutes from "./protected-routes";
 
 export default function AppRouter() {
   return (
     <>
       <Routes>
-        <Route element={<DashbordLayout />}>
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/teachers" element={<TeacherListPage />} />
+        <Route path="/" element={<HomePage />} />
+
+        <Route element={<ProtectedRoutes />}>
+          <Route element={<DashbordLayout />}>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/teachers" element={<TeacherListPage />} />
+            <Route path="/classes" element={<ClassesListPage />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

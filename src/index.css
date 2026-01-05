@@ -3,9 +3,18 @@
 
 @custom-variant dark (&:is(.dark *));
 
-body {
-    font-family: "Manrope", sans-serif;
-}
+body, #root, html {
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+  font-family: "Manrope", sans-serif;
+  height: 100%;
+  width: 100%;
+
+
+.disable-caret, img {
+  caret-color: transparent;
+}}
 
 :root {
   --lightYellow: oklch(0.9118 0.1253 96.42);

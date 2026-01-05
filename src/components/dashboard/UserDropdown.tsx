@@ -9,8 +9,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuthStore } from "@/stores/auth.store";
+import { LogOutIcon } from "lucide-react";
 
 export default function UserDropdown() {
+  const { user, logout } = useAuthStore();
+  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -19,15 +23,15 @@ export default function UserDropdown() {
           className="p-5 gap-4 flex items-center justify-between"
         >
           <div className="grid flex-1 text-left text-sm *:text-right leading-tight">
-            <span className="truncate font-medium text-sm ">user.name</span>
+            <span className="truncate font-medium text-sm ">{user?.name}</span>
             <span className="text-muted-foreground truncate text-xs">
-              user.email
+              {user?.email}
             </span>
           </div>
           <Avatar className="h-8 w-8 rounded-lg grayscale">
             {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
-            <AvatarFallback className="rounded-lg bg-background">
-              CN
+            <AvatarFallback className="rounded-lg bg-background capitalize">
+              {user?.name.charAt(0)}
             </AvatarFallback>
           </Avatar>
         </Button>
@@ -42,12 +46,14 @@ export default function UserDropdown() {
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
             <Avatar className="h-8 w-8 rounded-lg">
               {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
-              <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+              <AvatarFallback className="rounded-lg">
+                {user?.name.charAt(0)}
+              </AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-medium">user.name</span>
+              <span className="truncate font-medium">{user?.name}</span>
               <span className="text-muted-foreground truncate text-xs">
-                user.email
+                {user?.email}
               </span>
             </div>
           </div>
@@ -68,8 +74,8 @@ export default function UserDropdown() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          {/* <IconLogout /> */}
+        <DropdownMenuItem onClick={() => logout()}>
+          <LogOutIcon />
           Log out
         </DropdownMenuItem>
       </DropdownMenuContent>

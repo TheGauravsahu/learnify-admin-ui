@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import UserDropdown from "./sidebar/UserDropdown";
+import UserDropdown from "./UserDropdown";
 import { ModeToggle } from "../common/ModeToggle";
 
 export default function Navbar() {
