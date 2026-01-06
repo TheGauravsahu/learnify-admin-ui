@@ -3,7 +3,6 @@ import { graphql } from "@/gql";
 export const LOGIN = graphql(`
   mutation Login($input: LoginInput!) {
     login(input: $input) {
-      token
       user {
         _id
         name
@@ -11,6 +10,13 @@ export const LOGIN = graphql(`
         role
         updatedAt
       }
+      refreshToken
+      accessToken
     }
   }
 `);
+
+export const LOGOUT = graphql(`
+  mutation Logout($refreshToken: String!) {
+  logout(refreshToken: $refreshToken)
+}`)

@@ -9,12 +9,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { LOGOUT } from "@/graphql/queries/auth.query";
 import { useAuthStore } from "@/stores/auth.store";
+import { useMutation } from "@apollo/client/react";
 import { LogOutIcon } from "lucide-react";
+import { toast } from "sonner";
 
 export default function UserDropdown() {
-  const { user, logout } = useAuthStore();
-  
+  const { user, logout, refreshToken } = useAuthStore();
+  const [logoutUser, { loading }] = useMutation(LOGOUT);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -74,7 +78,22 @@ export default function UserDropdown() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => logout()}>
+        <DropdownMenuItem
+          onClick={() => {
+            logoutUser({
+              variables: {
+                refreshToken,
+              },
+              onCompleted: () => {
+                logout();
+              },
+              onError: (err) => {
+                toast.error(err.message);
+              },
+            });
+          }}
+          disabled={loading}
+        >
           <LogOutIcon />
           Log out
         </DropdownMenuItem>

@@ -5,13 +5,15 @@ import { persist } from "zustand/middleware";
 
 export interface LoginResponse {
   user: User;
-  token: string;
+  accessToken: string;
+  refreshToken: string;
   rememberMe?: boolean;
 }
 
 interface AuthState {
   user: User | null;
-  token: string | null;
+  accessToken: string | null;
+  refreshToken: string | null;
   isAuthenticated: boolean;
 
   login: (data: LoginResponse) => void;
@@ -22,13 +24,15 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
-      token: null,
+      accessToken: null,
+      refreshToken: null,
       isAuthenticated: false,
 
-      login: ({ user, token }) => {
+      login: ({ user, accessToken, refreshToken }) => {
         set({
           user,
-          token,
+          accessToken,
+          refreshToken,
           isAuthenticated: true,
         });
       },
@@ -36,7 +40,8 @@ export const useAuthStore = create<AuthState>()(
         toast.success("Logged out successfully.");
         set({
           user: null,
-          token: null,
+          accessToken: null,
+          refreshToken: null,
           isAuthenticated: false,
         });
       },

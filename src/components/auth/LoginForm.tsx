@@ -78,7 +78,8 @@ export default function LoginForm() {
 
         authStore.login({
           user: data.user,
-          token: data.token,
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
           rememberMe,
         });
 

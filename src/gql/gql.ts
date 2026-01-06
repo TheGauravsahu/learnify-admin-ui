@@ -14,7 +14,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-    "\n  mutation Login($input: LoginInput!) {\n    login(input: $input) {\n      token\n      user {\n        _id\n        name\n        email\n        role\n        updatedAt\n      }\n    }\n  }\n": typeof types.LoginDocument,
+    "\n  mutation Login($input: LoginInput!) {\n    login(input: $input) {\n      user {\n        _id\n        name\n        email\n        role\n        updatedAt\n      }\n      refreshToken\n      accessToken\n    }\n  }\n": typeof types.LoginDocument,
+    "\n  mutation Logout($refreshToken: String!) {\n  logout(refreshToken: $refreshToken)\n}": typeof types.LogoutDocument,
     "\n  query AdminDashboard {\n    adminDashboard {\n      counts {\n        students\n        teachers\n        parents\n        classes\n        notices\n      }\n      genderStats {\n        boys\n        girls\n      }\n      latestNotices {\n        _id\n        title\n        description\n        createdAt\n      }\n    }\n    classWiseStudentCount {\n      classId\n      className\n      count\n    }\n  }\n": typeof types.AdminDashboardDocument,
     "\n  query ListTeachers(\n    $page: Int\n    $limit: Int\n    $sortBy: TeacherSortField\n    $sortOrder: SortOrder\n    $search: String\n  ) {\n    teachers(\n      page: $page\n      limit: $limit\n      sortBy: $sortBy\n      sortOrder: $sortOrder\n      search: $search\n    ) {\n      total\n      page\n      limit\n      data {\n        _id\n        subject\n        experience\n        user {\n          name\n          _id\n          email\n          role\n        }\n      }\n    }\n  }\n": typeof types.ListTeachersDocument,
     "\n  mutation CreateTeacher($input: TeacherInput!) {\n    createTeacher(input: $input) {\n      _id\n      subject\n      experience\n    }\n  }\n": typeof types.CreateTeacherDocument,
@@ -22,7 +23,8 @@ type Documents = {
     "\n  mutation UpdateTeacher($teacherId: ID!, $input: TeacherInput!) {\n    updateTeacher(id: $teacherId, input: $input) {\n      _id\n    }\n  }\n": typeof types.UpdateTeacherDocument,
 };
 const documents: Documents = {
-    "\n  mutation Login($input: LoginInput!) {\n    login(input: $input) {\n      token\n      user {\n        _id\n        name\n        email\n        role\n        updatedAt\n      }\n    }\n  }\n": types.LoginDocument,
+    "\n  mutation Login($input: LoginInput!) {\n    login(input: $input) {\n      user {\n        _id\n        name\n        email\n        role\n        updatedAt\n      }\n      refreshToken\n      accessToken\n    }\n  }\n": types.LoginDocument,
+    "\n  mutation Logout($refreshToken: String!) {\n  logout(refreshToken: $refreshToken)\n}": types.LogoutDocument,
     "\n  query AdminDashboard {\n    adminDashboard {\n      counts {\n        students\n        teachers\n        parents\n        classes\n        notices\n      }\n      genderStats {\n        boys\n        girls\n      }\n      latestNotices {\n        _id\n        title\n        description\n        createdAt\n      }\n    }\n    classWiseStudentCount {\n      classId\n      className\n      count\n    }\n  }\n": types.AdminDashboardDocument,
     "\n  query ListTeachers(\n    $page: Int\n    $limit: Int\n    $sortBy: TeacherSortField\n    $sortOrder: SortOrder\n    $search: String\n  ) {\n    teachers(\n      page: $page\n      limit: $limit\n      sortBy: $sortBy\n      sortOrder: $sortOrder\n      search: $search\n    ) {\n      total\n      page\n      limit\n      data {\n        _id\n        subject\n        experience\n        user {\n          name\n          _id\n          email\n          role\n        }\n      }\n    }\n  }\n": types.ListTeachersDocument,
     "\n  mutation CreateTeacher($input: TeacherInput!) {\n    createTeacher(input: $input) {\n      _id\n      subject\n      experience\n    }\n  }\n": types.CreateTeacherDocument,
@@ -47,7 +49,11 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation Login($input: LoginInput!) {\n    login(input: $input) {\n      token\n      user {\n        _id\n        name\n        email\n        role\n        updatedAt\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation Login($input: LoginInput!) {\n    login(input: $input) {\n      token\n      user {\n        _id\n        name\n        email\n        role\n        updatedAt\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  mutation Login($input: LoginInput!) {\n    login(input: $input) {\n      user {\n        _id\n        name\n        email\n        role\n        updatedAt\n      }\n      refreshToken\n      accessToken\n    }\n  }\n"): (typeof documents)["\n  mutation Login($input: LoginInput!) {\n    login(input: $input) {\n      user {\n        _id\n        name\n        email\n        role\n        updatedAt\n      }\n      refreshToken\n      accessToken\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation Logout($refreshToken: String!) {\n  logout(refreshToken: $refreshToken)\n}"): (typeof documents)["\n  mutation Logout($refreshToken: String!) {\n  logout(refreshToken: $refreshToken)\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
