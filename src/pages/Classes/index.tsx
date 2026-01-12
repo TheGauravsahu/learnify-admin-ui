@@ -6,27 +6,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { useSearchParams } from "react-router-dom";
-import { useState } from "react";
+import { LIST_CLASSES } from "@/graphql/queries/classes.query";
+import { useQuery } from "@apollo/client/react";
+import { ScreenLoader } from "@/components/common/Loader";
+import ErrorOccurred from "@/components/common/ErrorOccurred";
+import type { ListClassesQuery } from "@/gql/graphql";
+import DeleteClassDialog from "@/components/classes/DeleteClassDialog";
+import EditClassDialog from "@/components/classes/EditClassDialog";
 
 export default function ClassesListPage() {
+  const { data, loading, error } = useQuery<ListClassesQuery>(LIST_CLASSES);
+
+  if (loading) return <ScreenLoader />;
+  if (error) return <ErrorOccurred error={error} />;
+
   return (
     <div className="bg-background flex-1 m-4 mt-0">
       <div className="mt-4">
         <Table>
           <TableHeader>
             <TableRow className="border-none">
-              <TableHead className="w-70">Info</TableHead>
-              <TableHead>Class ID</TableHead>
+              <TableHead className="w-70">Class ID</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Session</TableHead>
               <TableHead>Section</TableHead>
@@ -34,62 +34,23 @@ export default function ClassesListPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow
-              className="even:bg-slate-50 dark:even:bg-secondary px-4 border-none cursor-pointer"
-            >
-              <TableCell>
-                <div className="flex items-center gap-2">
-                  <Avatar className="h-8 w-8 rounded-lg grayscale">
-                    {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
-                    <AvatarFallback className="rounded-lg bg-background"></AvatarFallback>
-                  </Avatar>
-                  <div className="grid flex-1 text-left text-sm  leading-tight">
-                    <span className="truncate font-medium text-sm ">
-                      {/* {teacher.user.name} */}
-                    </span>
-                    <span className="text-muted-foreground truncate text-xs">
-                      {/* {teacher.user.email} */}
-                    </span>
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell className="text-right gap-2 flex items-center justify-end"></TableCell>
-            </TableRow>
+            {data?.classes.map((grade) => (
+              <TableRow
+                key={grade._id}
+                className="even:bg-slate-50 dark:even:bg-secondary px-4 border-none cursor-pointer"
+              >
+                <TableCell>{grade._id}</TableCell>
+                <TableCell>{grade.name}</TableCell>
+                <TableCell>{grade.academicYear}</TableCell>
+                <TableCell>{grade.section}</TableCell>
+                <TableCell className="text-right gap-2 flex items-center justify-end">
+                  <DeleteClassDialog classId={grade._id} />
+                  <EditClassDialog grade={grade} />
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
-
-        <div className="mt-4">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  className="cursor-pointer"
-                  //   onClick={() => updateParam("page", Math.max(1, page - 1))}
-                />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink
-                  className="cursor-pointer"
-                  // isActive={page === i + 1}
-                  // onClick={() => updateParam("page", i + 1)}
-                >
-                  {/* {i + 1} */}
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext
-                  className="cursor-pointer"
-                  //   onClick={() =>
-                  //     // updateParam("page", Math.min(totalPages, page + 1))
-                  //   }
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
       </div>
     </div>
   );
